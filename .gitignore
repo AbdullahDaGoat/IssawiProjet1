@@ -1,0 +1,45 @@
+# Compiled JavaScript files
+dist
+out
+
+# Node.js modules
+node_modules/
+
+# Logs and debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# VSCode settings
+.vscode/
+*.code-workspace
+
+# Coverage reports
+coverage/
+
+# Build output
+build/
+
+# Temporary files
+temp/
+tmp/
+
+# Optional npm cache files
+.npm
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Package lock files (optional: remove if needed in repo)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

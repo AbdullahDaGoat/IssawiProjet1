@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Test Student Work</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Layout */
+    .container {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      .container {
+        padding: 32px;
+      }
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Header */
+    .header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .scanning {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    /* Content */
+    .content {
+      padding: 24px;
+    }
+    
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      background-color: white;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    
+    .form-select:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: none;
+    }
+    
+    .btn:focus {
+      outline: none;
+    }
+    
+    .btn-instructions {
+      background-color: #fef3c7;
+      color: #92400e;
+      margin-bottom: 24px;
+    }
+    
+    .btn-instructions:hover {
+      background-color: #fde68a;
+    }
+    
+    .btn-instructions:focus {
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.4);
+    }
+    
+    .btn-primary {
+      background-color: #4f46e5;
+      color: white;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .btn-primary:hover {
+      background-color: #4338ca;
+    }
+    
+    .btn-primary:focus {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-icon {
+      margin-right: 6px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Selected Folder */
+    .selected-folder {
+      display: inline-flex;
+      align-items: center;
+      background-color: #f3f4f6;
+      color: #4b5563;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-bottom: 12px;
+    }
+    
+    .folder-icon {
+      color: #6366f1;
+      margin-right: 6px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .folder-path {
+      max-width: 320px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Test Summary */
+    .test-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .summary-card {
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    .summary-card.passed {
+      background-color: #f0fdf4;
+    }
+    
+    .summary-card.failed {
+      background-color: #fef2f2;
+    }
+    
+    .summary-count {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .summary-count.passed {
+      color: #16a34a;
+    }
+    
+    .summary-count.failed {
+      color: #dc2626;
+    }
+    
+    .summary-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+    }
+    
+    .summary-label.passed {
+      color: #15803d;
+    }
+    
+    .summary-label.failed {
+      color: #b91c1c;
+    }
+    
+    /* Test Results */
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+    
+    .results-container {
+      margin-bottom: 24px;
+    }
+    
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    /* Test Cards */
+    .test-card {
+      border-radius: 8px;
+      padding: 16px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .test-card.running {
+      background-color: #fffbeb;
+      border: 1px solid #fef3c7;
+    }
+    
+    .test-card.passed {
+      background-color: #f0fdf4;
+      border: 1px solid #dcfce7;
+    }
+    
+    .test-card.failed {
+      background-color: #fef2f2;
+      border: 1px solid #fee2e2;
+    }
+    
+    .test-header {
+      display: flex;
+      align-items: center;
+    }
+    
+    .test-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+    
+    .test-badge.running {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    .test-badge.passed {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+    
+    .test-badge.failed {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .test-details {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #fee2e2;
+      font-size: 0.875rem;
+    }
+    
+    .test-detail {
+      margin-bottom: 4px;
+    }
+    
+    .detail-label {
+      font-weight: 500;
+      color: #374151;
+    }
+    
+    .detail-value {
+      color: #4b5563;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      color: #d1d5db;
+      margin-bottom: 12px;
+      margin: 0 auto;
+    }
+    
+    .empty-title {
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    
+    .empty-subtitle {
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #e5e7eb;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+    
+    .spinner.running {
+      border-top-color: #fbbf24;
+    }
+    
+    /* Utility Classes */
+    .hidden {
+      display: none;
+    }
+    
+    .space-y-1 > * + * {
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="title">Test Student Work</h1>
+        <span id="scanning" class="scanning">
+          <span class="animate-pulse">Scanning for main.py...</span>
+          <span class="spinner animate-spin"></span>
+        </span>
+      </div>
+      
+      <div class="content">
+        <!-- Project Selection -->
+        <div class="form-group">
+          <label for="folderSelect" class="form-label">Select Python Project</label>
+          <select id="folderSelect" class="form-select">
+            <option value="">-- Select a project --</option>
+          </select>
+        </div>
+
+        <!-- Instructions Button -->
+        <button id="openInstructionsButton" class="btn btn-instructions">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Open Instructions
+        </button>
+
+        <!-- Code Constraint Results Section -->
+        <div id="constraintResultsContainer" class="results-container hidden">
+          <h2 class="section-title">Code Constraint Check</h2>
+          <div id="constraintResults"></div>
+        </div>
+
+        <!-- Test Buttons -->
+        <div id="testButtons" class="hidden">
+          <div id="selectedFolder" class="selected-folder hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
+            <span id="folderPath" class="folder-path">No folder selected</span>
+          </div>
+          <button id="runTestButton" class="btn btn-primary">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Run Tests
+          </button>
+        </div>
+
+        <!-- Test Results -->
+        <div id="resultsContainer" class="results-container hidden">
+          <div id="testSummary" class="test-summary">
+            <div class="summary-card">
+              <div id="totalCount" class="summary-count">0</div>
+              <div class="summary-label">Total Tests</div>
+            </div>
+            <div class="summary-card passed">
+              <div id="passedCount" class="summary-count passed">0</div>
+              <div class="summary-label passed">Passed</div>
+            </div>
+            <div class="summary-card failed">
+              <div id="failedCount" class="summary-count failed">0</div>
+              <div class="summary-label failed">Failed</div>
+            </div>
+          </div>
+          
+          <h2 class="section-title">Test Results</h2>
+          <div id="results" class="results"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
+          </svg>
+          <p class="empty-title">No projects with main.py found</p>
+          <p class="empty-subtitle">Make sure you have Python projects with main.py + instructions.md in your workspace</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+    const folderSelect = document.getElementById('folderSelect');
+    const testButtonsDiv = document.getElementById('testButtons');
+    const runTestButton = document.getElementById('runTestButton');
+    const resultsDiv = document.getElementById('results');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const emptyState = document.getElementById('emptyState');
+    const scanning = document.getElementById('scanning');
+    const selectedFolder = document.getElementById('selectedFolder');
+    const folderPath = document.getElementById('folderPath');
+    const totalCount = document.getElementById('totalCount');
+    const passedCount = document.getElementById('passedCount');
+    const failedCount = document.getElementById('failedCount');
+    const constraintResultsContainer = document.getElementById('constraintResultsContainer');
+    const constraintResultsDiv = document.getElementById('constraintResults');
+    const openInstructionsButton = document.getElementById('openInstructionsButton');
+
+    let testStats = { total: 0, passed: 0, failed: 0 };
+
+    // Hide empty state and constraint results initially
+    emptyState.classList.add('hidden');
+    constraintResultsContainer.classList.add('hidden');
+
+    folderSelect.addEventListener('change', () => {
+      const folder = folderSelect.value;
+      // Clear old constraint messages
+      constraintResultsDiv.innerHTML = '';
+      constraintResultsContainer.classList.add('hidden');
+
+      if (folder) {
+        folderPath.textContent = folder;
+        selectedFolder.classList.remove('hidden');
+        testButtonsDiv.classList.remove('hidden');
+        vscode.postMessage({ command: 'folderSelected', folder });
+      } else {
+        testButtonsDiv.classList.add('hidden');
+      }
+    });
+
+    runTestButton.addEventListener('click', () => {
+      const folder = folderSelect.value;
+      if (folder) {
+        // Reset counters
+        testStats = { total: 0, passed: 0, failed: 0 };
+        updateTestCounters();
+
+        // Clear previous results
+        resultsDiv.innerHTML = '';
+        resultsContainer.classList.remove('hidden');
+
+        // Clear constraint results too
+        constraintResultsDiv.innerHTML = '';
+        constraintResultsContainer.classList.add('hidden');
+
+        // Which type do we run?
+        if (runTestButton.textContent.includes('Input/Output')) {
+          vscode.postMessage({ command: 'runIOTests', folder });
+        } else if (runTestButton.textContent.includes('Function')) {
+          vscode.postMessage({ command: 'runFunctionTests', folder });
+        } else {
+          // default
+          vscode.postMessage({ command: 'runIOTests', folder });
+        }
+      }
+    });
+
+    function updateTestCounters() {
+      totalCount.textContent = testStats.total;
+      passedCount.textContent = testStats.passed;
+      failedCount.textContent = testStats.failed;
+    }
+
+    // Listen for messages from the extension
+    window.addEventListener('message', event => {
+      const message = event.data;
+
+      switch (message.command) {
+        case 'folderList':
+          scanning.classList.add('hidden');
+          if (message.folders && message.folders.length > 0) {
+            folderSelect.innerHTML = '<option value="">-- Select a project --</option>';
+            message.folders.forEach(folder => {
+              const option = document.createElement('option');
+              option.value = folder;
+              const parts = folder.split(/[\\/]/);
+              // Example: "C:\Users\...\someFolder"
+              // Show last two segments if possible
+              if (parts.length >= 2) {
+                option.textContent = parts[parts.length - 2] + ' → ' + parts[parts.length - 1];
+              } else {
+                option.textContent = folder;
+              }
+              folderSelect.appendChild(option);
+            });
+            folderSelect.selectedIndex = 1;
+            const defaultFolder = folderSelect.value;
+            if (defaultFolder) {
+              folderPath.textContent = defaultFolder;
+              selectedFolder.classList.remove('hidden');
+              testButtonsDiv.classList.remove('hidden');
+              vscode.postMessage({ command: 'folderSelected', folder: defaultFolder });
+            }
+            emptyState.classList.add('hidden');
+          } else {
+            folderSelect.innerHTML = '<option value="">-- No projects found --</option>';
+            testButtonsDiv.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+          }
+          break;
+
+        case 'updateTestButton':
+          if (message.testType === 'io') {
+            runTestButton.innerHTML = `
+              <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Run Input/Output Tests
+            `;
+            testButtonsDiv.classList.remove('hidden');
+          } else if (message.testType === 'function') {
+            runTestButton.innerHTML = `
+              <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              Run Function Tests
+            `;
+            testButtonsDiv.classList.remove('hidden');
+          } else {
+            testButtonsDiv.classList.add('hidden');
+          }
+          break;
+
+        case 'constraintResults':
+          constraintResultsContainer.classList.remove('hidden');
+          if (message.status === 'passed') {
+            constraintResultsDiv.innerHTML = `
+              <div class="test-card passed animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge passed">Passed</span>
+                  <span>${message.message}</span>
+                </div>
+              </div>
+            `;
+          } else if (message.status === 'failed') {
+            let violationsHtml = (message.violations || []).map((v) => `<li style="margin-left: 16px; font-size: 0.875rem;">${v}</li>`).join('');
+            constraintResultsDiv.innerHTML = `
+              <div class="test-card failed animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge failed">Failed</span>
+                  <span>${message.message}</span>
+                </div>
+                <ul style="margin-top: 8px; color: #b91c1c;">${violationsHtml}</ul>
+              </div>
+            `;
+          } else if (message.status === 'error') {
+            constraintResultsDiv.innerHTML = `
+              <div class="test-card failed animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge failed">Error</span>
+                  <span>${message.message}</span>
+                </div>
+              </div>
+            `;
+          }
+          break;
+
+        case 'testStatus':
+          testStats.total = Math.max(testStats.total, message.index);
+          if (message.status === 'passed') testStats.passed++;
+          if (message.status === 'failed') testStats.failed++;
+          updateTestCounters();
+          resultsContainer.classList.remove('hidden');
+
+          let testDiv = document.getElementById('test-' + message.index);
+          if (!testDiv) {
+            testDiv = document.createElement('div');
+            testDiv.id = 'test-' + message.index;
+            resultsDiv.appendChild(testDiv);
+          }
+          if (message.status === 'running') {
+            testDiv.innerHTML = `
+              <div class="test-card running animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge running">Running</span>
+                  <span>${message.message}</span>
+                  <span class="spinner running animate-spin"></span>
+                </div>
+              </div>
+            `;
+          } else if (message.status === 'passed') {
+            testDiv.innerHTML = `
+              <div class="test-card passed animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge passed">Passed</span>
+                  <span>${message.message}</span>
+                </div>
+              </div>
+            `;
+          } else if (message.status === 'failed') {
+            testDiv.innerHTML = `
+              <div class="test-card failed animate-fadeIn">
+                <div class="test-header">
+                  <span class="test-badge failed">Failed</span>
+                  <span>${message.message}</span>
+                </div>
+                <div class="test-details space-y-1">
+                  <p class="test-detail"><span class="detail-label">Input:</span> <span class="detail-value">${message.testInput || ''}</span></p>
+                  <p class="test-detail"><span class="detail-label">Expected:</span> <span class="detail-value">${message.expectedOutput || ''}</span></p>
+                  <p class="test-detail"><span class="detail-label">Actual:</span> <span class="detail-value">${message.actualOutput || ''}</span></p>
+                </div>
+              </div>
+            `;
+          }
+          break;
+      }
+    });
+
+    openInstructionsButton.addEventListener('click', () => {
+      const folder = folderSelect.value;
+      vscode.postMessage({ command: 'openInstructions', folder });
+    });
+
+    // Automatically send scan message
+    setTimeout(() => {
+      vscode.postMessage({ command: 'scanFolders' });
+    }, 300);
+  </script>
+</body>
+</html>
