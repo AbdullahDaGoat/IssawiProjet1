@@ -360,11 +360,3 @@ Then copy that JSON snippet into the `constraints` array.
   Ensure the function name in your `functionName` property actually exists in `main.py`.
 - **Constraint not recognized**:  
   Confirm that you’re using correct `type` and `target` strings (`max`, `min`, `required`, `forbidden`, etc.).
-
----
-
-## Follow-Up Questions
-
-**Q1**: “How do I allow a maximum of 2 loop statements (`for` or `while`) combined in a single constraint?”  
-**Q2**: “Can I create custom constraints that look for specific function names or docstrings in the code?”  
-**Q3**: “What happens if I want to test code that prompts the user multiple times for input—do I still put all lines in the `input` field?”
